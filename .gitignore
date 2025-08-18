@@ -1,0 +1,11 @@
+node_modules/
+.env
+.env.*
+backend/.env
+frontend/.env
+data/
+backend/data/
+frontend/build/
+*.log
+coverage/
+.DS_Store
