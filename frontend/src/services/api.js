@@ -12,8 +12,8 @@ class ApiService {
     const defaultOptions = {
       headers: {
         'Content-Type': 'application/json',
-      },
-      credentials: 'include',
+      }
+      // Note: no cookies needed; removing credentials avoids strict CORS requirements
     };
 
     const config = {
