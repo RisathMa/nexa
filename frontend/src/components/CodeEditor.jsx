@@ -20,7 +20,7 @@ const CodeEditor = ({
     { value: 'python', label: 'Python', icon: '🐍' },
     { value: 'html', label: 'HTML', icon: '🌐' },
     { value: 'css', label: 'CSS', icon: '🎨' },
-    { value: 'json', label: 'JSON', label: '📄' },
+    { value: 'json', label: 'JSON', icon: '📄' },
     { value: 'markdown', label: 'Markdown', icon: '📝' }
   ];
 
@@ -58,13 +58,13 @@ const CodeEditor = ({
 
   const getDefaultCode = (lang) => {
     const defaults = {
-             javascript: '// Write your JavaScript code here\nconsole.log("Hello, World!");\n\n// Example function\nfunction greet(name) {\n  return `Hello, ${name}!`;\n}\n\ngreet("Nexa");',
-             typescript: '// Write your TypeScript code here\ninterface User {\n  name: string;\n  age: number;\n}\n\nfunction greetUser(user: User): string {\n  return `Hello, ${user.name}! You are ${user.age} years old.`;\n}\n\nconst user: User = { name: "Nexa", age: 1 };\ngreetUser(user);',
-             python: '# Write your Python code here\nprint("Hello, World!")\n\n# Example function\ndef greet(name):\n    return f"Hello, {name}!"\n\ngreet("Nexa")',
-             html: '<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>Nexa Code</title>\n</head>\n<body>\n    <h1>Hello from Nexa!</h1>\n    <p>This is a sample HTML template.</p>\n</body>\n</html>',
+      javascript: '// Write your JavaScript code here\nconsole.log("Hello, World!");\n\n// Example function\nfunction greet(name) {\n  return `Hello, \\${name}!`;\n}\n\ngreet("Nexa");',
+      typescript: '// Write your TypeScript code here\ninterface User {\n  name: string;\n  age: number;\n}\n\nfunction greetUser(user: User): string {\n  return `Hello, \\${user.name}! You are \\${user.age} years old.`;\n}\n\nconst user: User = { name: "Nexa", age: 1 };\ngreetUser(user);',
+      python: '# Write your Python code here\nprint("Hello, World!")\n\n# Example function\ndef greet(name):\n    return f"Hello, {name}!"\n\ngreet("Nexa")',
+      html: '<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>Nexa Code</title>\n</head>\n<body>\n    <h1>Hello from Nexa!</h1>\n    <p>This is a sample HTML template.</p>\n</body>\n</html>',
       css: '/* Write your CSS here */\nbody {\n    font-family: Arial, sans-serif;\n    margin: 0;\n    padding: 20px;\n    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n    color: white;\n}\n\nh1 {\n    text-align: center;\n    font-size: 2.5rem;\n    margin-bottom: 1rem;\n}',
-             json: '{\n  "name": "Nexa Code",\n  "description": "Sample JSON structure",\n  "version": "1.0.0",\n  "features": [\n    "Code editing",\n    "Execution",\n    "AI assistance"\n  ]\n}',
-             markdown: '# Nexa Code Editor\n\n## Features\n\n- **Syntax Highlighting**: Support for multiple languages\n- **Code Execution**: Run your code safely\n- **AI Integration**: Get help from AI\n\n## Getting Started\n\n1. Choose your language\n2. Write your code\n3. Click Run to execute\n\n```javascript\nconsole.log("Hello, World!");\n```'
+      json: '{\n  "name": "Nexa Code",\n  "description": "Sample JSON structure",\n  "version": "1.0.0",\n  "features": [\n    "Code editing",\n    "Execution",\n    "AI assistance"\n  ]\n}',
+      markdown: '# Nexa Code Editor\n\n## Features\n\n- **Syntax Highlighting**: Support for multiple languages\n- **Code Execution**: Run your code safely\n- **AI Integration**: Get help from AI\n\n## Getting Started\n\n1. Choose your language\n2. Write your code\n3. Click Run to execute\n\n```javascript\nconsole.log("Hello, World!");\n```'
     };
     return defaults[lang] || defaults.javascript;
   };

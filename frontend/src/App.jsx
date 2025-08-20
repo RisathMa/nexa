@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Chat from './components/Chat';
 import CodeEditor from './components/CodeEditor';
 import { ChatBubbleLeftRightIcon, CodeBracketIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
+import api from './services/api';
 
 function App() {
   const [activeTab, setActiveTab] = useState('chat');
@@ -52,23 +53,16 @@ function App() {
     setCodeOutput(null);
 
     try {
-      // Simulate code execution for now (we'll connect to backend later)
-      setTimeout(() => {
-        if (language === 'javascript') {
-          try {
-            // Safe evaluation (only for demo - real implementation will use VM2)
-            const result = eval(code);
-            setCodeOutput(`Output:\n${result}`);
-          } catch (error) {
-            setCodeOutput(`Error: ${error.message}`);
-          }
-        } else {
-          setCodeOutput(`Language ${language} execution will be implemented in Phase 3 with the backend!`);
-        }
-        setIsCodeRunning(false);
-      }, 1000);
+      const response = await api.executeCode(code, language, '');
+      if (response?.success) {
+        const { output, error } = response.data;
+        setCodeOutput(error ? `Error: ${error}` : output || '');
+      } else {
+        setCodeOutput('Error: Unable to execute code');
+      }
     } catch (error) {
       setCodeOutput(`Error: ${error.message}`);
+    } finally {
       setIsCodeRunning(false);
     }
   };
