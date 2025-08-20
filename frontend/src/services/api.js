@@ -150,7 +150,7 @@ class ApiService {
     });
   }
 
-  async deleteConversation(id) {
+  async removeConversation(id) {
     return this.request(`/memory/conversation/${id}`, {
       method: 'DELETE'
     });
