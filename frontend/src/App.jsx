@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Chat from './components/Chat';
 import CodeEditor from './components/CodeEditor';
 import { ChatBubbleLeftRightIcon, CodeBracketIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
-import api from './services/api';
+import apiService from './services/api';
 
 function App() {
   const [activeTab, setActiveTab] = useState('chat');
@@ -10,6 +10,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [codeOutput, setCodeOutput] = useState(null);
   const [isCodeRunning, setIsCodeRunning] = useState(false);
+  const [conversationId, setConversationId] = useState(null);
 
   const handleSendMessage = async (message) => {
     const userMessage = {
@@ -22,20 +23,25 @@ function App() {
     setIsLoading(true);
 
     try {
-      // Simulate AI response for now (we'll connect to backend later)
-      setTimeout(() => {
-        const aiMessage = {
-          role: 'assistant',
-          content: `I received your message: "${message}". This is a placeholder response. In Phase 3, I'll connect to the real AI backend!`,
-          timestamp: new Date().toISOString()
-        };
-        setMessages(prev => [...prev, aiMessage]);
-        setIsLoading(false);
-      }, 1000);
+      const res = await apiService.sendMessage(message, conversationId, {});
+      const data = res?.data || res; // tolerate either shape
+
+      // keep conversation id for thread continuity
+      if (data?.conversationId) {
+        setConversationId(data.conversationId);
+      }
+
+      const aiMessage = {
+        role: 'assistant',
+        content: data?.response || 'No response received from server.',
+        timestamp: new Date().toISOString()
+      };
+      setMessages(prev => [...prev, aiMessage]);
+      setIsLoading(false);
     } catch (error) {
       const errorMessage = {
         role: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again.',
+        content: `Sorry, I encountered an error: ${error.message}`,
         timestamp: new Date().toISOString()
       };
       setMessages(prev => [...prev, errorMessage]);
@@ -53,16 +59,16 @@ function App() {
     setCodeOutput(null);
 
     try {
-      const response = await api.executeCode(code, language, '');
-      if (response?.success) {
-        const { output, error } = response.data;
-        setCodeOutput(error ? `Error: ${error}` : output || '');
+      const res = await apiService.executeCode(code, language);
+      const data = res?.data || res;
+      if (data?.error) {
+        setCodeOutput(`Error: ${data.error}`);
       } else {
-        setCodeOutput('Error: Unable to execute code');
+        setCodeOutput(data?.output ?? '');
       }
+      setIsCodeRunning(false);
     } catch (error) {
       setCodeOutput(`Error: ${error.message}`);
-    } finally {
       setIsCodeRunning(false);
     }
   };
